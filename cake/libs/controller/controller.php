@@ -134,6 +134,13 @@ class Controller extends Object {
  * @link http://book.cakephp.org/view/1231/Pagination
  */
 	var $paginate = array('limit' => 20, 'page' => 1);
+/**
+ * Limits min and max for paging records
+ *
+ * @var array
+ * @access public
+ */
+	var $limits = array('min' => 1, 'max' => 100);
 
 /**
  * The name of the views subfolder containing views for this controller.
@@ -1174,6 +1181,12 @@ class Controller extends Object {
 		$options['limit'] = (int) $options['limit'];
 		if (empty($options['limit']) || $options['limit'] < 1) {
 			$options['limit'] = 1;
+		}
+		elseif(isset($this->limits['max']) && $options['limit'] > $this->limits['max']) {
+			$options['limit'] = $this->limits['max'];
+		}
+		elseif(isset($this->limits['min']) && $options['limit'] < $this->limits['min']) {
+			$options['limit'] = $this->limits['min'];    
 		}
 
 		extract($options);
